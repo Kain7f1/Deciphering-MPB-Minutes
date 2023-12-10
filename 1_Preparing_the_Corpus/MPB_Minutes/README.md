@@ -12,7 +12,7 @@
   - 저장 폴더명 : minutes_pdf_files
 
 ### 2. pdf에서 text 추출
-  ![pdf_extraction_result.png](pdf_extraction_result.png)
+  ![pdf_extraction_log.png](pdf_extraction_log.png)
   - 데이터 수 : 315개
   - 추출한 데이터 : 날짜, 의사록 text
   - text 추출에 걸린 시간 : 157초
