@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 import utility_module as util
-import crawling_tool as cr
+import news_crawling_tool as cr
 import pandas as pd
 import time
 import traceback
@@ -15,13 +15,13 @@ def crawl_url(search_keyword, start_date, end_date):
     # [0-1. 기본 설정값]
     keyword_unicode = util.convert_to_unicode(search_keyword)  # 검색 키워드의 유니코드 값
     # 폴더 만들기
-    util.create_folder(f"./url/temp_results")
-    util.create_folder(f"./url/temp_logs")
-    util.create_folder(f"./url/results")
-    util.create_folder(f"./url/logs")
+    util.create_folder("./url/temp_results")
+    util.create_folder("./url/temp_logs")
+    util.create_folder("./url/results")
+    util.create_folder("./url/logs")
 
     # [0-2. 임시파일 폴더를 읽고, 파일이 있으면 진행된 부분부터 시작한다]
-    if not util.is_folder_empty(f"./url/temp_logs"):
+    if not util.is_folder_empty("./url/temp_logs"):
         temp_date = util.find_date(folder_path="./url/temp_results", option="max")    # 가장 최근 날짜 (YYYYMMDD)
         latest_date = f"{temp_date[:4]}-{temp_date[4:6]}-{temp_date[6:]}"   # YYYY-MM-DD
         start_date = util.get_next_date(latest_date)    # 크롤링 시작할 날짜 설정 (되어있는 날의 다음 날 부터)
