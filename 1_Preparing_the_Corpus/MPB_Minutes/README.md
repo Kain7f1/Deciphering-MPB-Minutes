@@ -1,4 +1,4 @@
-# 의사록 text 추출 (MPB Minutes)
+# 의사록 text 추출 (Text Extraction : MPB Minutes)
   - 방법 : [한국은행](https://www.bok.or.kr/portal/bbs/B0000245/list.do?menuNo=200761&pageIndex=1)에서 의사록 pdf 내려받기, pdf에서 text 추출
   - 수집기간 : 2008-04-10 ~ 2023-10-19
 
@@ -12,7 +12,7 @@
   - 저장 폴더명 : minutes_pdf_files
 
 ### 2. pdf에서 text 추출
-  ![img_1.png](pdf_extraction_result.png)
+  ![pdf_extraction_log.png](pdf_extraction_log.png)
   - 데이터 수 : 315개
   - 추출한 데이터 : 날짜, 의사록 text
   - text 추출에 걸린 시간 : 157초
