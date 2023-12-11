@@ -6,32 +6,46 @@ import os
 import re
 
 
-#####################################
-# 기능 : 함수의 실행 시간을 재는 데코레이터
-# 사용법 : @util.timer_decorator 를 함수 정의할 때 함수명 윗줄에 적는다
-def timer_decorator(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"{func.__name__} 함수의 실행 시간은 {elapsed_time:.2f} 초 입니다")
-        return result
-    return wrapper
+#######################################
+# 기능 : YYYYMMDD 형식의 문자열을 YYYY-MM-DD 형식으로 변환
+def format_date(date_string):
+    if len(date_string) == 8:
+        return f"{date_string[:4]}-{date_string[4:6]}-{date_string[6:]}"
+    else:
+        return "Invalid date format"
+
+
+########################################
+# 기능 : 지정된 구절과 그 이전의 모든 텍스트를 제거
+def remove_before_phrase(text, phrase):
+    # 지정된 구절을 포함하여 그 이전의 모든 텍스트를 제거
+    index = text.find(phrase)
+    if index != -1:
+        return text[index + len(phrase):]
+    else:
+        return text  # 구절이 없는 경우, 원본 텍스트를 반환
 
 
 ##########################################
-# 기능 : 한글 문자열을 유니코드 UTF-8로 인코딩하여 반환합니다
-# 입력 예시 : '금리'
-# 리턴값 예시 : '%EA%B8%88%EB%A6%AC'
-def convert_to_unicode(input_str):
-    return '%' + '%'.join(['{:02X}'.format(byte) for byte in input_str.encode('utf-8')])
+# 기능 : 지정된 구절과 그 이후의 모든 텍스트를 제거
+def remove_after_phrase(text, phrase):
+    # 지정된 구절을 포함하여 그 이후의 모든 텍스트를 제거
+    index = text.find(phrase)
+    if index != -1:
+        return text[:index]
+    else:
+        return text  # 구절이 없는 경우, 원본 텍스트를 반환
 
 
-#########################################################################################################
-# 한국어인지 검사하는 함수
-def is_korean(s):
-    return bool(re.fullmatch("[\u3131-\u3163\uAC00-\uD7A3]+", s))
+######################################
+# text 전처리 함수
+def preprocess_text(text):
+    # 줄바꿈 제거
+    text = text.replace("\n", "")
+
+    # 한글, 영어 알파벳, 숫자, ".", "%", 공백만 남기고 모두 제거
+    text = re.sub(r'[^\uAC00-\uD7AFa-zA-Z0-9.%\s]', '', text)
+    return text
 
 
 #####################################
@@ -144,15 +158,6 @@ def preprocess_text(text):
         return result   # 전처리 결과값 리턴
 
 
-##################################################
-# 기능 : 입력한 문자열에, list의 원소가 포함되어 있으면 True, 아니면 False를 리턴하는 함수
-def contains_any_from_list(str_, list_):
-    for item in list_:
-        if item in str_:
-            return True
-    return False
-
-
 ##########################################
 # split_rows_into_chunks()
 # 기능 : row를 chunk_size단위로 끊은 리스트를 반환하는 함수
@@ -171,42 +176,6 @@ def split_rows_into_chunks(row_count, chunk_size=1000):
         start_idx += chunk_size
 
     return chunks
-
-
-#########################################
-# 기능 : DataFrame을 chunk_size 단위로 잘라서, 잘려진 DataFrame의 리스트를 반환하는 함수
-# 입력값 : 자를 데이터프레임
-# 리턴값 : 잘라진 df의 리스트
-def split_df_into_sub_dfs(df, chunk_size=1000):
-    row_count = len(df)  # row 개수 확인
-    chunks = split_rows_into_chunks(row_count, chunk_size)  # chunk로 나눌 구간 생성
-
-    # 각 chunk에 대해 DataFrame을 잘라서 리스트에 저장
-    sub_dfs = []
-    for chunk in chunks:
-        start, end = chunk
-        sub_df = df.iloc[start:end + 1]  # 해당 범위의 데이터를 가져옴
-        sub_df = sub_df.reset_index(drop=True)
-        sub_dfs.append(sub_df)
-
-    return sub_dfs
-
-
-##############################
-# 기능 : 폴더 내 keyword와 일치하는 파일만 검색, 임시파일 어디까지 했는지 int 값으로 반환한다. 없으면 -1 반환
-def get_done_index(keyword, folder_path):
-    done_index = -1
-    if is_folder_empty(folder_path):
-        return done_index   # 폴더가 비어있으면 -1 리턴
-    pattern = re.compile(r"^(\d+)_temp_results_" + re.escape(keyword) + r".csv$")
-
-    for filename in os.listdir(folder_path):
-        match = pattern.match(filename)
-        if match:
-            num = int(match.group(1))
-            done_index = max(done_index, num)   # 보다 큰 값으로 done_index가 결정됨
-
-    return done_index
 
 
 ########################################
