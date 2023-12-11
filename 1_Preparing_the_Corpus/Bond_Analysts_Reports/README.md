@@ -9,7 +9,10 @@
   - 저장 폴더명 : reports_pdf_files
 
 ### 2. pdf에서 text 추출
-  - 데이터 수 : 개
-  - 추출한 데이터 :
-  - text 추출에 걸린 시간 : 
-  - 결과 파일 : 
+  ![pdf_extraction_log.png](pdf_extraction_log.png)
+  - 추출한 데이터 : 6089개
+  - 에러 발생 데이터 : 35개  
+  - 추출하지 못한 데이터가 0.57% 있었지만, 이미 데이터는 충분하므로 진행한다.
+  - 추출한 데이터 : 날짜, 채권분석보고서 text
+  - text 추출에 걸린 시간 : 5851초
+  - 결과 파일 : reports_text.csv (104 MB)

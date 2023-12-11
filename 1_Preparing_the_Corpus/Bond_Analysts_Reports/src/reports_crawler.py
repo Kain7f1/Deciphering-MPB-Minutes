@@ -1,5 +1,5 @@
 import reports_crawling_tool as cr
-import utility_module as util
+import reports_utility_module as util
 import re
 import requests
 
@@ -15,8 +15,7 @@ def preprocess_filename(filename):
 ########################
 # 기능 : 채권분석보고서 pdf를 다운받는다
 @ util.timer_decorator
-def get_reports_pdf():
-    folder_path = "./reports_pdf_files"
+def get_reports_pdf(folder_path):
     util.create_folder(folder_path)
 
     # 2008-04-10 ~ 2023-10-19 기간에 맞게 설정
@@ -40,7 +39,7 @@ def get_reports_pdf():
         try:
             url = soup.select_one('th.view_report').find('a')['href']
         except Exception as e:
-            print(f'[에러 : {i}]', e)  # 존재하지 않는 번호.
+            # print(f'[에러 : {i}]', e)  # 존재하지 않는 번호.
             continue
         response = requests.get(url)
         with open(f"{folder_path}/{pdf_name}.pdf", 'wb') as file:
