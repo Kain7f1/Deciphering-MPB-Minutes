@@ -18,6 +18,14 @@
 
 ## 2. Preprocessing Texts
 
+### 2-a) 텍스트 데이터 정제
+
+### 2-b) 특수문자, 영어 처리
+
+### 2-c) 토큰화
+
+
+
 ---
 
 ## 3. Feature Selection
